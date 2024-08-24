@@ -1,0 +1,26 @@
+id: com.github.bhh32.network_setup
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.golang
+command: network_setup
+finish-args: 
+  - --share=ipc
+  - --socket=x11
+  - --share=network
+  - --device=dri
+build-options:
+  env:
+    - GOBIN=/app/bin
+    - GOROOT=/usr/lib/sdk/golang
+modules:
+  - name: network_setup
+    buildsystem: simple
+    build-commands:
+      - $GOROOT/bin/go build -trimpath -o network_setup
+      - install -Dm755 network_setup $FLATPK_DEST/bin/network_setup
+    sources:
+      - type: directory
+        dest-filename: network_setup
+        path: "~/Documents/projects/go/network_setup/"
