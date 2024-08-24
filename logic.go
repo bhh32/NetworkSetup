@@ -22,7 +22,7 @@ func setup(con_name string, iface string, ssid string, psk string, is_hidden boo
 	}
 
 	// Create the connection
-	create := exec.Command("nmcli", "c", "add", "type", "wifi", "con-name", con_name, "ifname", iface, "ssid", ssid)
+	create := exec.Command("flatpak-spawn", "--host", "nmcli", "c", "add", "type", "wifi", "con-name", con_name, "ifname", iface, "ssid", ssid)
 	_, err := create.Output()
 	if err != nil {
 		labelVal = (string("There was an error creating the wifi network connection ") + err.Error())
@@ -30,7 +30,7 @@ func setup(con_name string, iface string, ssid string, psk string, is_hidden boo
 	}
 
 	// Add the security to the wifi network created
-	sec := exec.Command("nmcli", "con", "modify", con_name, "wifi-sec.key-mgmt", "wpa-psk", "wifi-sec.psk", psk, "wifi.hidden", hidden, "connection.autoconnect", auto)
+	sec := exec.Command("flatpak-spawn", "--host", "nmcli", "con", "modify", con_name, "wifi-sec.key-mgmt", "wpa-psk", "wifi-sec.psk", psk, "wifi.hidden", hidden, "connection.autoconnect", auto)
 	_, err = sec.Output()
 	if err != nil {
 		labelVal = "There was an error setting up the security and auto-connect status of the new connection" + err.Error()
@@ -39,7 +39,7 @@ func setup(con_name string, iface string, ssid string, psk string, is_hidden boo
 
 	// Connect to the new network
 	if con_now {
-		con := exec.Command("nmcli", "con", "up", con_name)
+		con := exec.Command("flatpak-spawn", "--host", "nmcli", "con", "up", con_name)
 		_, err = con.Output()
 		if err != nil {
 			labelVal = "There was an error connecting to " + con_name + ":\n " + err.Error()
@@ -55,7 +55,7 @@ func setup(con_name string, iface string, ssid string, psk string, is_hidden boo
 }
 
 func remove(con_name string) (labelVal string) {
-	remove := exec.Command("nmcli", "con", "delete", "id", con_name)
+	remove := exec.Command("flatpak-spawn", "--host", "nmcli", "con", "delete", "id", con_name)
 	out, err := remove.Output()
 	if err != nil {
 		labelVal = "There was an error removing " + con_name
@@ -68,7 +68,7 @@ func remove(con_name string) (labelVal string) {
 }
 
 func getCurrentlySetupCons() (cons []string) {
-	active_cons := exec.Command("nmcli", "con", "show")
+	active_cons := exec.Command("flatpak-spawn", "--host", "nmcli", "con", "show")
 	out, err := active_cons.Output()
 	if err != nil {
 		cons = append(cons, "No network connections have been setup...")
