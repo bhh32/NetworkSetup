@@ -7,7 +7,8 @@ sdk-extensions:
 command: network_setup
 finish-args: 
   - --share=ipc
-  - --socket=x11
+  - --socket=fallback-x11
+  - --socket=wayland
   - --share=network
   - --device=dri
 build-options:
@@ -21,6 +22,6 @@ modules:
       - $GOROOT/bin/go build -trimpath -o network_setup
       - install -Dm755 network_setup $FLATPK_DEST/bin/network_setup
     sources:
-      - type: directory
-        dest-filename: network_setup
-        path: "~/Documents/projects/go/network_setup/"
+      - type: git
+        url: https://github.com/bhh32/network_setup.git
+        commit: 04cae9e141d72323a7e8e6bb3752766592e858f1
