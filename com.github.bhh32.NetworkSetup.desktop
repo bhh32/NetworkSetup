@@ -1,0 +1,9 @@
+[Desktop Entry]
+Categories=System;
+Comment=Simple nmcli wrapper to create and remove WiFi networks
+Exec=flatpak run com.github.bhh32.NetworkSetup
+Icon=NetworkSetup_icon.png
+Name=Network Setup
+Terminal=false
+Type=Application
+version=1.0
