@@ -1,4 +1,4 @@
-module network_setup
+module NetworkSetup
 
 go 1.23.0
 
